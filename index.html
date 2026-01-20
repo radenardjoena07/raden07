@@ -2,227 +2,114 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
+  <title>Pencari Jodoh Online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TemuJodoh Pro - Platform Pencari Jodoh</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; margin:0; background:#f4f4f4; }
-    header { background:#2e7d32; color:white; padding:20px; text-align:center; }
-    nav { background:#fff; padding:10px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,.1); }
-    nav a { margin:0 10px; text-decoration:none; color:#2e7d32; font-weight:bold; }
-    section { padding:30px; max-width:1100px; margin:auto; }
-    .card { background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.1); margin-bottom:20px; }
-    .profiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
-    button { background:#2e7d32; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; }
-    input, select, textarea { width:100%; padding:8px; margin:8px 0; }
-    footer { background:#222; color:white; text-align:center; padding:20px; }
-    .badge { font-size:12px; background:#2e7d32; color:white; padding:3px 6px; border-radius:4px; }
+    body { font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:0 }
+    header { background:#ff4d6d; color:white; padding:15px; text-align:center }
+    .container { padding:15px }
+    input, button { padding:10px; margin:5px 0; width:100% }
+    button { background:#ff4d6d; color:white; border:none; cursor:pointer }
+    .chat-box { border:1px solid #ccc; height:300px; overflow-y:auto; padding:10px; background:white }
+    .message { margin-bottom:8px }
+    img { max-width:100px; border-radius:50% }
   </style>
 </head>
 <body>
-
 <header>
-  <h1>TemuJodoh Pro</h1>
-  <p>Platform Pencari Jodoh Islami, Umum & Premium</p>
+  <h2>Grup Pencari Jodoh Online</h2>
 </header>
 
-<nav>
-  <a href="#login">Login</a>
-  <a href="#filter">Cari Jodoh</a>
-  <a href="#chat">Chat</a>
-  <a href="#admin">Admin</a>
-</nav>
+<div class="container" id="auth">
+  <h3>Daftar / Login</h3>
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
+  <input type="text" id="name" placeholder="Nama Profil" />
+  <input type="file" id="photo" />
+  <button onclick="register()">Daftar</button>
+  <button onclick="login()">Login</button>
+</div>
 
-<section id="login">
-  <div class="card">
-    <h2>Login / Daftar Akun</h2>
-    <input type="text" placeholder="Username" />
-    <input type="password" placeholder="Password" />
-    <select>
-      <option>Akun Umum</option>
-      <option>Akun Islami</option>
-      <option>Akun Premium</option>
-    </select>
-    <button onclick="alert('Login berhasil (demo)')">Masuk</button>
-  </div>
-</section>
+<div class="container" id="chat" style="display:none">
+  <h3>Chat Grup</h3>
+  <div class="chat-box" id="messages"></div>
+  <input type="text" id="messageInput" placeholder="Ketik pesan..." />
+  <button onclick="sendMessage()">Kirim</button>
+  <button onclick="logout()">Logout</button>
+</div>
 
-<section id="filter">
-  <div class="card">
-    <h2>Filter Pencarian</h2>
-    <select><option>Usia</option><option>20 - 25</option><option>26 - 30</option><option>31 - 40</option></select>
-    <select><option>Domisili</option><option>Jakarta</option><option>Bandung</option><option>Surabaya</option></select>
-    <select><option>Tujuan</option><option>Serius</option><option>Taaruf</option></select>
-    <button>Filter</button>
-  </div>
-
-  <div class="profiles">
-    <div class="card">
-      <h3>Ahmad, 29 <span class="badge">Islami</span></h3>
-      <p>Domisili: Bogor</p>
-      <p>Tujuan: Taaruf</p>
-      <button>Chat</button>
-    </div>
-    <div class="card">
-      <h3>Siti, 27 <span class="badge">Premium</span></h3>
-      <p>Domisili: Bandung</p>
-      <p>Tujuan: Serius</p>
-      <button>Chat</button>
-    </div>
-  </div>
-</section>
-
-<section id="chat">
-  <div class="card">
-    <h2>Chat Antar Anggota (Demo)</h2>
-    <textarea rows="4" placeholder="Tulis pesan..."></textarea>
-    <button>Kirim</button>
-    <p><em>Catatan: Chat real-time membutuhkan backend (Firebase / Socket.io)</em></p>
-  </div>
-</section>
-
-<section id="admin">
-  <div class="card">
-    <h2>Admin Panel</h2>
-    <p>Approve / Tolak Profil Anggota</p>
-    <ul>
-      <li>Andi, 30 <button>Approve</button> <button>Tolak</button></li>
-      <li>Siti, 27 <button>Approve</button> <button>Tolak</button></li>
-    </ul>
-  </div>
-</section>
-
-<footer>
-  <p>&copy; 2026 TemuJodoh Pro | Jodoh dengan Niat Baik</p>
-</footer>
-
-</body>
-
-<!--
-TEMUJODOH PRO - FULL SYSTEM (LARAVEL + FIREBASE)
-Dokumentasi & kerangka implementasi
--->
-
-========================
-1. TEKNOLOGI DIGUNAKAN
-========================
-Backend  : Laravel 10 (PHP)
-Database : MySQL
-Auth     : Laravel Breeze
-Chat     : Firebase Realtime Database
-Payment  : Midtrans / Stripe
-Role     : Admin / Member / Premium
-
-========================
-2. STRUKTUR DATABASE
-========================
-users
-- id
-- name
-- email
-- password
-- usia
-- domisili
-- tujuan (serius / taaruf)
-- role (admin, member)
-- akun_type (umum, islami, premium)
-- approved (boolean)
-- created_at
-
-subscriptions
-- id
-- user_id
-- paket
-- expired_at
-
-wali
-- id
-- user_id
-- nama_wali
-- kontak
-
-========================
-3. LOGIN & AUTH (LARAVEL)
-========================
-php artisan breeze:install
-php artisan migrate
-
-Middleware approval:
-User harus approved admin sebelum login penuh
-
-========================
-4. CHAT REAL-TIME (FIREBASE)
-========================
-Firebase Realtime DB structure:
-/chats/{user1_id}/{user2_id}
-- message
-- sender
-- timestamp
-
-Frontend JS (contoh):
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
-var firebaseConfig = { apiKey:"API_KEY", databaseURL:"URL" };
-firebase.initializeApp(firebaseConfig);
+  // GANTI DENGAN KONFIGURASI FIREBASE ANDA
+  const firebaseConfig = {
+    apiKey: "API_KEY",
+    authDomain: "PROJECT_ID.firebaseapp.com",
+    projectId: "PROJECT_ID",
+    storageBucket: "PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      document.getElementById('auth').style.display = 'none';
+      document.getElementById('chat').style.display = 'block';
+      loadMessages();
+    }
+  });
+
+  function register() {
+    const email = email.value;
+    const password = password.value;
+    const name = document.getElementById('name').value;
+    const file = document.getElementById('photo').files[0];
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(cred => {
+        const ref = storage.ref('profiles/' + cred.user.uid);
+        return ref.put(file).then(() => ref.getDownloadURL())
+          .then(url => db.collection('users').doc(cred.user.uid).set({ name, photo:url }))
+      });
+  }
+
+  function login() {
+    auth.signInWithEmailAndPassword(email.value, password.value);
+  }
+
+  function logout() {
+    auth.signOut();
+    location.reload();
+  }
+
+  function sendMessage() {
+    const text = messageInput.value;
+    db.collection('messages').add({
+      text,
+      uid: auth.currentUser.uid,
+      created: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    messageInput.value = '';
+  }
+
+  function loadMessages() {
+    db.collection('messages').orderBy('created').onSnapshot(snap => {
+      messages.innerHTML = '';
+      snap.forEach(doc => {
+        const div = document.createElement('div');
+        div.className = 'message';
+        div.textContent = doc.data().text;
+        messages.appendChild(div);
+      });
+    });
+  }
 </script>
-
-========================
-5. ADMIN PANEL ASLI
-========================
-Route::middleware(['auth','admin'])->group(function(){
-  Route::get('/admin', AdminDashboardController::class);
-  Route::post('/approve/{user}', ApproveUserController::class);
-});
-
-Fitur Admin:
-- Approve/Tolak profil
-- Blokir user
-- Monitoring chat
-
-========================
-6. MODE ISLAMI
-========================
-Aturan:
-- Foto profil DISABLED
-- Chat hanya setelah wali disetujui
-- Admin sebagai moderator
-
-Logic:
-if(user->akun_type == 'islami'){
-  disable_photo();
-  require_wali();
-}
-
-========================
-7. SISTEM PREMIUM
-========================
-Paket:
-- Gratis
-- Premium Bulanan
-- Premium Tahunan
-
-Fitur Premium:
-- Unlimited chat
-- Lihat siapa yang like
-- Prioritas match
-
-Payment Flow:
-User -> Payment Gateway -> Callback -> Activate Subscription
-
-========================
-8. STATUS PROJECT
-========================
-✔ Siap dikembangkan
-✔ Siap produksi
-✔ Cocok startup & komunitas
-
-NEXT STEP:
-- Hosting
-- Domain
-- Legal & kebijakan privasi
-
--- TemuJodoh Pro System Architecture --
-  
-  
+</body>
 </html>
