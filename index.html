@@ -1,109 +1,146 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pembuat Kartu Ucapan Online</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <style>
-    body { font-family: 'Poppins', sans-serif; margin:0; background:#f8fafc; }
-    nav { background:#4f46e5; padding:15px; display:flex; justify-content:center; gap:20px; }
-    nav a { color:white; text-decoration:none; font-weight:600; }
-    section { display:none; padding:30px; }
-    section.active { display:block; }
-    h1,h2 { text-align:center; }
-    .container { max-width:1000px; margin:auto; background:white; padding:25px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.1); }
-    label { font-weight:600; }
-    select,input,textarea,button { width:100%; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ccc; }
-    button { background:#4f46e5; color:white; border:none; cursor:pointer; font-size:16px; }
-    .actions { display:flex; gap:10px; margin-top:15px; flex-wrap:wrap; }
-    .card-preview { margin-top:30px; padding:40px; border-radius:20px; text-align:center; min-height:280px; position:relative; }
-
-    .lebaran{background:linear-gradient(135deg,#064e3b,#10b981);color:#ecfdf5;font-family:'Amiri',serif;}
-    .natal{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:white;}
-    .ulangtahun{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:white;}
-    .idadha{background:linear-gradient(135deg,#78350f,#f59e0b);color:white;}
-    .tahunbaru{background:linear-gradient(135deg,#020617,#334155);color:white;}
-    .valentine{background:linear-gradient(135deg,#be123c,#fb7185);color:white;}
-
-    footer{text-align:center;margin:30px;color:#555;}
-    @media(max-width:768px){.actions{flex-direction:column;}}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pembuat Kartu Ucapan SaaS</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<style>
+body{font-family:Poppins,sans-serif;margin:0;background:#f1f5f9}
+nav{background:#4f46e5;padding:15px;display:flex;gap:20px;justify-content:center}
+nav a{color:#fff;text-decoration:none;font-weight:600}
+section{display:none;padding:30px}
+section.active{display:block}
+.container{max-width:1100px;margin:auto;background:#fff;padding:25px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+label{font-weight:600}
+select,input,textarea,button{width:100%;padding:12px;margin-top:8px;border-radius:10px;border:1px solid #ccc}
+button{background:#4f46e5;color:#fff;border:none;font-size:16px;cursor:pointer}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.card-preview{margin-top:30px;padding:40px;border-radius:20px;text-align:center;min-height:320px;position:relative;overflow:hidden}
+.card-preview img{max-width:120px;border-radius:50%;margin-bottom:10px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+.gallery div{padding:40px;border-radius:16px;color:#fff;text-align:center;font-weight:600}
+.lebaran{background:linear-gradient(135deg,#064e3b,#10b981);color:#ecfdf5;font-family:Amiri,serif}
+.idadha{background:linear-gradient(135deg,#78350f,#f59e0b);color:#fff}
+.natal{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff}
+.ulangtahun{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff}
+.tahunbaru{background:linear-gradient(135deg,#020617,#334155);color:#fff}
+.valentine{background:linear-gradient(135deg,#be123c,#fb7185);color:#fff}
+footer{text-align:center;margin:30px;color:#555}
+</style>
 </head>
 <body>
 
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c77c6fef6.mp3" type="audio/mpeg">
+</audio>
+
 <nav>
-  <a href="#" onclick="showPage('home')">Home</a>
-  <a href="#" onclick="showPage('gallery')">Gallery</a>
-  <a href="#" onclick="showPage('about')">About</a>
+<a href="#" onclick="showPage('home')">Home</a>
+<a href="#" onclick="showPage('gallery')">Gallery</a>
+<a href="#" onclick="showPage('about')">About</a>
 </nav>
 
 <section id="home" class="active">
-  <h1>🎉 Pembuat Kartu Ucapan</h1>
-  <div class="container">
-    <label>Jenis Kartu</label>
-    <select id="jenis">
-      <option value="lebaran">Lebaran</option>
-      <option value="idadha">Idul Adha</option>
-      <option value="natal">Natal</option>
-      <option value="ulangtahun">Ulang Tahun</option>
-      <option value="tahunbaru">Tahun Baru</option>
-      <option value="valentine">Valentine</option>
-    </select>
+<h1 style="text-align:center">🎉 Pembuat Kartu Ucapan</h1>
+<div class="container">
+<label>Template</label>
+<select id="jenis">
+<option value="lebaran">Lebaran</option>
+<option value="idadha">Idul Adha</option>
+<option value="natal">Natal</option>
+<option value="ulangtahun">Ulang Tahun</option>
+<option value="tahunbaru">Tahun Baru</option>
+<option value="valentine">Valentine</option>
+</select>
 
-    <label>Nama Penerima</label>
-    <input id="nama" placeholder="Nama penerima" />
+<label>Nama Penerima</label>
+<input id="nama" />
 
-    <label>Pesan</label>
-    <textarea id="pesan" rows="4"></textarea>
+<label>Pesan</label>
+<textarea id="pesan" rows="4"></textarea>
 
-    <div class="actions">
-      <button onclick="buatKartu()">Buat Kartu</button>
-      <button onclick="downloadPNG()">Download PNG</button>
-      <button onclick="shareWA()">Share WhatsApp</button>
-    </div>
+<label>Upload Foto (opsional)</label>
+<input type="file" id="foto" accept="image/*" />
 
-    <div id="preview" class="card-preview"></div>
-  </div>
+<div class="actions">
+<button onclick="buatKartu()">Buat Kartu</button>
+<button onclick="downloadPNG()">Download PNG</button>
+<button onclick="shareLink()">Share Link</button>
+<button onclick="toggleMusic()">🎶 Musik</button>
+</div>
+
+<div id="preview" class="card-preview"></div>
+</div>
 </section>
 
 <section id="gallery">
-  <h2>🖼️ Gallery Template</h2>
-  <div class="container">
-    <p>Kumpulan tema kartu: Lebaran Islami, Natal Klasik, Ulang Tahun Modern, Idul Adha, Tahun Baru, Valentine.</p>
-    <p>(Bisa dikembangkan jadi grid gambar template)</p>
-  </div>
+<h2>🖼️ Gallery Template</h2>
+<div class="container gallery">
+<div class="lebaran">Lebaran</div>
+<div class="idadha">Idul Adha</div>
+<div class="natal">Natal</div>
+<div class="ulangtahun">Ulang Tahun</div>
+<div class="tahunbaru">Tahun Baru</div>
+<div class="valentine">Valentine</div>
+</div>
 </section>
 
 <section id="about">
-  <h2>ℹ️ Tentang Website</h2>
-  <div class="container">
-    <p>Website ini digunakan untuk membuat kartu ucapan digital yang bisa diunduh dan dibagikan langsung ke WhatsApp.</p>
-    <p>Dibangun dengan HTML, CSS, dan JavaScript — ringan dan gratis di-hosting.</p>
-  </div>
+<h2>🚀 Versi SaaS & Monetisasi</h2>
+<div class="container">
+<ul>
+<li>🧾 Penyimpanan kartu: LocalStorage (bisa upgrade Firebase)</li>
+<li>💰 Monetisasi: Premium template, watermark removal</li>
+<li>📦 Source code dijual (HTML version)</li>
+<li>🌐 Bisa dikembangkan React + Backend</li>
+</ul>
+</div>
 </section>
 
-<footer>© 2026 Pembuat Kartu Ucapan Online</footer>
+<footer>© 2026 Greeting Card SaaS</footer>
 
 <script>
-function showPage(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showPage(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 
 function buatKartu(){
-  const jenis=document.getElementById('jenis').value;
-  const nama=document.getElementById('nama').value||'Sahabat';
-  const pesan=document.getElementById('pesan').value||'Semoga harimu penuh kebahagiaan';
-  let judul={lebaran:'Selamat Idul Fitri',idadha:'Selamat Idul Adha',natal:'Selamat Natal',ulangtahun:'Selamat Ulang Tahun',tahunbaru:'Selamat Tahun Baru',valentine:'Happy Valentine'}[jenis];
-  const p=document.getElementById('preview');
-  p.className='card-preview '+jenis;
-  p.innerHTML=`<h2>${judul}</h2><h3>${nama}</h3><p>${pesan}</p>`;
+const jenis=jenisEl.value
+const nama=namaEl.value||'Sahabat'
+const pesan=pesanEl.value||'Semoga harimu bahagia'
+let judul={lebaran:'Selamat Idul Fitri',idadha:'Selamat Idul Adha',natal:'Selamat Natal',ulangtahun:'Selamat Ulang Tahun',tahunbaru:'Selamat Tahun Baru',valentine:'Happy Valentine'}[jenis]
+preview.className='card-preview '+jenis
+preview.innerHTML=`<h2>${judul}</h2>`
+if(foto.files[0]){
+ const r=new FileReader()
+ r.onload=e=>preview.innerHTML+=`<img src='${e.target.result}'>`
+ r.readAsDataURL(foto.files[0])
+}
+preview.innerHTML+=`<h3>${nama}</h3><p>${pesan}</p>`
+localStorage.setItem('lastCard',JSON.stringify({jenis,nama,pesan}))
 }
 
-function downloadPNG(){html2canvas(document.getElementById('preview')).then(c=>{let a=document.createElement('a');a.download='kartu.png';a.href=c.toDataURL();a.click();});}
+function downloadPNG(){html2canvas(preview).then(c=>{let a=document.createElement('a');a.download='kartu.png';a.href=c.toDataURL();a.click()})}
 
-function shareWA(){
-  const text=encodeURIComponent(document.getElementById('preview').innerText);
-  window.open('https://wa.me/?text='+text,'_blank');
+function shareLink(){
+const data=btoa(JSON.stringify({jenis:jenisEl.value,nama:namaEl.value,pesan:pesanEl.value}))
+const url=location.origin+location.pathname+'?card='+data
+navigator.clipboard.writeText(url)
+alert('Link kartu disalin!')
+}
+
+function toggleMusic(){const m=document.getElementById('bgMusic');m.paused?m.play():m.pause()}
+
+const jenisEl=document.getElementById('jenis')
+const namaEl=document.getElementById('nama')
+const pesanEl=document.getElementById('pesan')
+const foto=document.getElementById('foto')
+const preview=document.getElementById('preview')
+
+const params=new URLSearchParams(location.search)
+if(params.get('card')){
+const d=JSON.parse(atob(params.get('card')))
+jenisEl.value=d.jenis;namaEl.value=d.nama;pesanEl.value=d.pesan;buatKartu()
 }
 </script>
 </body>
