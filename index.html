@@ -3,128 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cari Jodoh Pro</title>
+  <title>AlienStream — Livestream Peradaban Alien</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
-<body class="bg-pink-50 min-h-screen">
+<body class="bg-black text-green-300 font-mono">
+  <!-- Header -->
+  <header class="border-b border-green-500 p-6 flex justify-between items-center">
+    <h1 class="text-2xl md:text-3xl font-bold">👽 AlienStream</h1>
+    <nav class="space-x-4 text-sm">
+      <a href="#live" class="hover:text-green-100">Live</a>
+      <a href="#civilization" class="hover:text-green-100">Peradaban</a>
+      <a href="#chat" class="hover:text-green-100">Galactic Chat</a>
+      <a href="#about" class="hover:text-green-100">Tentang</a>
+    </nav>
+  </header>
 
-<header class="bg-pink-600 text-white p-4 text-center text-2xl font-bold">❤️ Cari Jodoh Pro</header>
+  <!-- Hero -->
+  <section class="p-8 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">Livestream Peradaban Alien</h2>
+    <p class="max-w-2xl mx-auto text-green-400">
+      Saksikan siaran langsung dari peradaban alien di luar angkasa. Teknologi, budaya,
+      dan kehidupan makhluk non-manusia — disiarkan secara real-time dari galaksi lain.
+    </p>
+  </section>
 
-<main class="p-6 max-w-4xl mx-auto space-y-6">
+  <!-- Livestream Section -->
+  <section id="live" class="p-8 grid md:grid-cols-3 gap-6">
+    <div class="md:col-span-2">
+      <div class="aspect-video bg-green-900 border border-green-500 flex items-center justify-center">
+        <p class="text-green-200 animate-pulse">🔴 LIVE: Kota Terapung Planet X-97</p>
+      </div>
+      <div class="mt-4 text-sm text-green-400">
+        Resolusi Kuantum • Translasi Bahasa Otomatis • Delay 0.3 detik antargalaksi
+      </div>
+    </div>
 
-  <!-- AUTH -->
-  <div id="auth" class="bg-white p-6 rounded-2xl shadow">
-    <h2 class="text-xl font-semibold mb-4">Login / Register</h2>
-    <input id="email" type="email" placeholder="Email" class="w-full p-2 border rounded mb-2" />
-    <input id="password" type="password" placeholder="Password" class="w-full p-2 border rounded mb-2" />
-    <button onclick="register()" class="bg-pink-600 text-white px-4 py-2 rounded w-full mb-2">Register</button>
-    <button onclick="login()" class="border px-4 py-2 rounded w-full">Login</button>
-  </div>
+    <!-- Info Panel -->
+    <div class="border border-green-500 p-4">
+      <h3 class="font-bold mb-2">Status Peradaban</h3>
+      <ul class="text-sm space-y-1">
+        <li>🌌 Planet: X-97 Nebula Orion</li>
+        <li>🧠 Tingkat Teknologi: Tipe III Kardashev</li>
+        <li>👾 Spesies Dominan: Aetherian</li>
+        <li>⏳ Umur Peradaban: ±1,2 juta tahun</li>
+      </ul>
+    </div>
+  </section>
 
-  <!-- PROFILE -->
-  <div id="profile" class="hidden bg-white p-6 rounded-2xl shadow">
-    <h2 class="text-xl font-semibold mb-4">Profil Saya</h2>
-    <input id="name" placeholder="Nama" class="w-full p-2 border rounded mb-2" />
-    <input id="age" type="number" placeholder="Usia" class="w-full p-2 border rounded mb-2" />
-    <select id="gender" class="w-full p-2 border rounded mb-2">
-      <option>Pria</option>
-      <option>Wanita</option>
-    </select>
-    <input id="interest" placeholder="Minat (musik, traveling, dll)" class="w-full p-2 border rounded mb-2" />
-    <input id="photo" type="file" class="w-full mb-2" />
-    <button onclick="saveProfile()" class="bg-pink-600 text-white px-4 py-2 rounded w-full">Simpan Profil</button>
-  </div>
+  <!-- Civilization Section -->
+  <section id="civilization" class="p-8 bg-green-950">
+    <h3 class="text-2xl font-bold mb-4">Cuplikan Peradaban</h3>
+    <div class="grid md:grid-cols-3 gap-4 text-sm">
+      <div class="border border-green-500 p-4">
+        <h4 class="font-bold mb-2">Arsitektur</h4>
+        <p>Kota hidup berbasis organisme biomekanik yang tumbuh dan beregenerasi.</p>
+      </div>
+      <div class="border border-green-500 p-4">
+        <h4 class="font-bold mb-2">Sistem Sosial</h4>
+        <p>Kesadaran kolektif melalui jaringan telepati kuantum.</p>
+      </div>
+      <div class="border border-green-500 p-4">
+        <h4 class="font-bold mb-2">Energi</h4>
+        <p>Memanen energi lubang hitam mikro untuk kebutuhan harian.</p>
+      </div>
+    </div>
+  </section>
 
-  <!-- MATCHING -->
-  <div id="matches" class="hidden bg-white p-6 rounded-2xl shadow">
-    <h2 class="text-xl font-semibold mb-4">💖 Hasil Matching</h2>
-    <div id="matchList" class="space-y-3"></div>
-  </div>
+  <!-- Chat Section -->
+  <section id="chat" class="p-8">
+    <h3 class="text-2xl font-bold mb-4">Galactic Live Chat</h3>
+    <div class="border border-green-500 p-4 h-64 overflow-y-auto text-sm space-y-2 bg-black">
+      <p><span class="text-green-500">@Observer_01:</span> Gerakan mereka seperti tidak terikat gravitasi 🤯</p>
+      <p><span class="text-green-500">@AstroGeek:</span> Teknologi ini ribuan tahun di depan manusia</p>
+      <p><span class="text-green-500">@XenoLinguist:</span> Terjemahan bahasanya makin akurat</p>
+    </div>
+    <input type="text" placeholder="Ketik pesan ke seluruh galaksi..."
+      class="mt-2 w-full p-2 bg-black border border-green-500 text-green-300 placeholder-green-600" />
+  </section>
 
-</main>
+  <!-- About -->
+  <section id="about" class="p-8 bg-green-950">
+    <h3 class="text-2xl font-bold mb-4">Tentang AlienStream</h3>
+    <p class="max-w-3xl text-green-400">
+      AlienStream adalah platform fiksi ilmiah eksperimental yang membayangkan
+      bagaimana jika manusia dapat mengamati peradaban alien secara langsung melalui
+      teknologi lintas galaksi. Website ini dibuat untuk tujuan hiburan, kreativitas,
+      dan eksplorasi ide futuristik.
+    </p>
+  </section>
 
-<script>
-  // FIREBASE CONFIG (GANTI DENGAN PUNYAMU)
-  const firebaseConfig = {
-    apiKey: "API_KEY",
-    authDomain: "PROJECT.firebaseapp.com",
-    projectId: "PROJECT",
-    storageBucket: "PROJECT.appspot.com",
-    messagingSenderId: "ID",
-    appId: "APP_ID"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-  const storage = firebase.storage();
-
-  function register() {
-    auth.createUserWithEmailAndPassword(email.value, password.value)
-      .then(() => alert('Register berhasil'))
-      .catch(err => alert(err.message));
-  }
-
-  function login() {
-    auth.signInWithEmailAndPassword(email.value, password.value)
-      .catch(err => alert(err.message));
-  }
-
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      authDiv.style.display = 'none';
-      profile.style.display = 'block';
-      matches.style.display = 'block';
-      loadMatches();
-    }
-  });
-
-  async function saveProfile() {
-    const file = photo.files[0];
-    const ref = storage.ref('photos/' + auth.currentUser.uid);
-    await ref.put(file);
-    const photoURL = await ref.getDownloadURL();
-
-    await db.collection('users').doc(auth.currentUser.uid).set({
-      name: name.value,
-      age: Number(age.value),
-      gender: gender.value,
-      interest: interest.value,
-      photoURL
-    });
-
-    alert('Profil disimpan');
-  }
-
-  async function loadMatches() {
-    const me = await db.collection('users').doc(auth.currentUser.uid).get();
-    const data = me.data();
-
-    const users = await db.collection('users').get();
-    matchList.innerHTML = '';
-
-    users.forEach(doc => {
-      if (doc.id !== auth.currentUser.uid) {
-        const u = doc.data();
-        if (u.gender !== data.gender && Math.abs(u.age - data.age) <= 5) {
-          matchList.innerHTML += `
-            <div class="border p-3 rounded">
-              <img src="${u.photoURL}" class="w-20 h-20 rounded-full mb-2" />
-              <strong>${u.name}</strong> (${u.age})<br>
-              <span class="text-sm">${u.interest}</span>
-              <button class="block mt-2 text-pink-600">💬 Chat</button>
-            </div>`;
-        }
-      }
-    });
-  }
-</script>
-
-<footer class="text-center p-4 text-sm text-gray-500">© 2026 Cari Jodoh Pro</footer>
+  <!-- Footer -->
+  <footer class="border-t border-green-500 p-4 text-center text-xs text-green-500">
+    © 2126 AlienStream Initiative • Transmisi Antar Galaksi Aman
+  </footer>
 </body>
-</html>
+  </html>
+  
