@@ -1,0 +1,116 @@
+<?php
+// =========================
+// CONFIG DATABASE
+// =========================
+$host = "localhost";
+$db   = "netflix_clone";
+$user = "root";
+$pass = "";
+
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) die("DB Error");
+
+$page = $_GET['page'] ?? 'home';
+$id   = $_GET['id'] ?? null;
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>NETMOV – Nonton Film Gratis & Legal</title>
+  <meta name="description" content="Streaming film gratis & legal dengan tampilan sekelas Netflix" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <meta property="og:title" content="NETMOV – Streaming Film" />
+  <meta property="og:description" content="Nonton film gratis & legal" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white">
+
+<!-- NAVBAR -->
+<nav class="fixed w-full z-50 bg-black/80 backdrop-blur flex justify-between px-8 py-4">
+  <a href="?page=home" class="text-red-600 text-2xl font-extrabold">NETMOV</a>
+  <form method="get">
+    <input type="hidden" name="page" value="home" />
+    <input name="q" placeholder="Cari film..." class="bg-zinc-900 px-3 py-1 rounded" />
+  </form>
+</nav>
+
+<div class="pt-24 px-8">
+
+<?php if ($page == 'home'): ?>
+<!-- HOME -->
+<section class="mb-12">
+  <h2 class="text-3xl font-bold mb-4">Trending Now</h2>
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+    <?php
+    $q = $_GET['q'] ?? '';
+    $sql = "SELECT * FROM movies WHERE title LIKE '%$q%'";
+    $res = $conn->query($sql);
+    while($m = $res->fetch_assoc()): ?>
+      <a href="?page=detail&id=<?= $m['id'] ?>" class="hover:scale-110 transition">
+        <img src="<?= $m['thumbnail'] ?>" class="rounded-xl h-64 w-full object-cover" />
+        <h3 class="mt-2 font-semibold text-sm"><?= $m['title'] ?></h3>
+      </a>
+    <?php endwhile; ?>
+  </div>
+</section>
+<?php endif; ?>
+
+<?php if ($page == 'detail' && $id): ?>
+<!-- DETAIL -->
+<?php $m = $conn->query("SELECT * FROM movies WHERE id=$id")->fetch_assoc(); ?>
+<section class="grid md:grid-cols-2 gap-10">
+  <img src="<?= $m['thumbnail'] ?>" class="rounded-xl" />
+  <div>
+    <h1 class="text-4xl font-bold mb-3"><?= $m['title'] ?></h1>
+    <p class="text-gray-400 mb-4"><?= $m['genre'] ?> • ⭐ <?= $m['rating'] ?></p>
+    <p class="mb-6"><?= $m['description'] ?></p>
+    <a href="?page=play&id=<?= $m['id'] ?>" class="bg-red-600 px-6 py-3 rounded font-bold">▶ Play</a>
+  </div>
+</section>
+<?php endif; ?>
+
+<?php if ($page == 'play' && $id): ?>
+<!-- PLAYER -->
+<?php $m = $conn->query("SELECT * FROM movies WHERE id=$id")->fetch_assoc(); ?>
+<section class="max-w-5xl mx-auto">
+  <h1 class="text-2xl font-bold mb-4"><?= $m['title'] ?></h1>
+  <video controls autoplay class="w-full rounded-xl">
+    <source src="<?= $m['video'] ?>" type="video/mp4" />
+  </video>
+</section>
+<?php endif; ?>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="text-center text-gray-500 text-sm py-6 mt-20">
+  © 2026 NETMOV – Free & Legal Streaming
+</footer>
+
+</body>
+</html>
+
+<?php
+/* =========================
+DATABASE STRUCTURE (MySQL)
+=========================
+CREATE TABLE movies (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  genre VARCHAR(50),
+  rating FLOAT,
+  description TEXT,
+  thumbnail TEXT,
+  video TEXT
+);
+
+INSERT SAMPLE:
+INSERT INTO movies (title, genre, rating, description, thumbnail, video)
+VALUES ('Sintel','Fantasy',8.3,'Film open-source','POSTER_URL','VIDEO_URL');
+*/
+?>
