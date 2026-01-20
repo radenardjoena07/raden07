@@ -109,5 +109,73 @@
   <p>Email: admin@jodohkita.com</p>
 </footer>
 
+<!-- ================= LOGIN & REGISTER (FRONTEND) ================= -->
+<section id="auth">
+  <h2 style="text-align:center">Login & Register</h2>
+  <div class="features">
+    <div class="feature">
+      <h3>Login</h3>
+      <input placeholder="Email" /><br><br>
+      <input placeholder="Password" type="password" /><br><br>
+      <button>Login</button>
+    </div>
+    <div class="feature">
+      <h3>Register</h3>
+      <input placeholder="Nama Lengkap" /><br><br>
+      <input placeholder="Usia" /><br><br>
+      <input placeholder="Kota" /><br><br>
+      <input placeholder="Visi Pernikahan" /><br><br>
+      <button>Daftar</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CHAT ANTAR ANGGOTA ================= -->
+<section>
+  <h2 style="text-align:center">Chat Anggota</h2>
+  <div class="feature">
+    <div style="height:150px; border:1px solid #ddd; padding:10px; overflow:auto">[Chat akan muncul di sini]</div><br>
+    <input placeholder="Tulis pesan..." style="width:100%; padding:10px" />
+  </div>
+</section>
+
+<!-- ================= MATCHING OTOMATIS ================= -->
+<section>
+  <h2 style="text-align:center">Matching Otomatis</h2>
+  <p style="text-align:center">Sistem mencocokkan berdasarkan usia, kota, dan visi pernikahan.</p>
+  <div class="features">
+    <div class="feature">
+      <h3>Hasil Cocok 92%</h3>
+      <p>Usia sesuai • Kota sama • Visi sejalan</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VERSI ISLAMI ================= -->
+<section>
+  <h2 style="text-align:center">Fitur Islami (Ta'aruf)</h2>
+  <div class="features">
+    <div class="feature">
+      <h3>Wali</h3>
+      <p>Setiap akun wanita dapat didampingi wali.</p>
+    </div>
+    <div class="feature">
+      <h3>Admin Mediator</h3>
+      <p>Chat diawasi & difasilitasi admin.</p>
+    </div>
+    <div class="feature">
+      <h3>Ta'aruf Bertahap</h3>
+      <p>Profil → Visi → Chat → Nadzhom → Khitbah</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BACKEND CONCEPT (PHP & MYSQL) =================
+TABLE users(id, nama, email, password, usia, kota, visi, role)
+TABLE chat(id, from_id, to_id, message, created_at)
+MATCHING = SELECT * FROM users ORDER BY skor_kecocokan DESC
+======================================================== -->
+
 </body>
-</html>
+                          </html>
+                            
