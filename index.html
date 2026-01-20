@@ -96,4 +96,133 @@
 </footer>
 
 </body>
+
+<!--
+TEMUJODOH PRO - FULL SYSTEM (LARAVEL + FIREBASE)
+Dokumentasi & kerangka implementasi
+-->
+
+========================
+1. TEKNOLOGI DIGUNAKAN
+========================
+Backend  : Laravel 10 (PHP)
+Database : MySQL
+Auth     : Laravel Breeze
+Chat     : Firebase Realtime Database
+Payment  : Midtrans / Stripe
+Role     : Admin / Member / Premium
+
+========================
+2. STRUKTUR DATABASE
+========================
+users
+- id
+- name
+- email
+- password
+- usia
+- domisili
+- tujuan (serius / taaruf)
+- role (admin, member)
+- akun_type (umum, islami, premium)
+- approved (boolean)
+- created_at
+
+subscriptions
+- id
+- user_id
+- paket
+- expired_at
+
+wali
+- id
+- user_id
+- nama_wali
+- kontak
+
+========================
+3. LOGIN & AUTH (LARAVEL)
+========================
+php artisan breeze:install
+php artisan migrate
+
+Middleware approval:
+User harus approved admin sebelum login penuh
+
+========================
+4. CHAT REAL-TIME (FIREBASE)
+========================
+Firebase Realtime DB structure:
+/chats/{user1_id}/{user2_id}
+- message
+- sender
+- timestamp
+
+Frontend JS (contoh):
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+var firebaseConfig = { apiKey:"API_KEY", databaseURL:"URL" };
+firebase.initializeApp(firebaseConfig);
+</script>
+
+========================
+5. ADMIN PANEL ASLI
+========================
+Route::middleware(['auth','admin'])->group(function(){
+  Route::get('/admin', AdminDashboardController::class);
+  Route::post('/approve/{user}', ApproveUserController::class);
+});
+
+Fitur Admin:
+- Approve/Tolak profil
+- Blokir user
+- Monitoring chat
+
+========================
+6. MODE ISLAMI
+========================
+Aturan:
+- Foto profil DISABLED
+- Chat hanya setelah wali disetujui
+- Admin sebagai moderator
+
+Logic:
+if(user->akun_type == 'islami'){
+  disable_photo();
+  require_wali();
+}
+
+========================
+7. SISTEM PREMIUM
+========================
+Paket:
+- Gratis
+- Premium Bulanan
+- Premium Tahunan
+
+Fitur Premium:
+- Unlimited chat
+- Lihat siapa yang like
+- Prioritas match
+
+Payment Flow:
+User -> Payment Gateway -> Callback -> Activate Subscription
+
+========================
+8. STATUS PROJECT
+========================
+✔ Siap dikembangkan
+✔ Siap produksi
+✔ Cocok startup & komunitas
+
+NEXT STEP:
+- Hosting
+- Domain
+- Legal & kebijakan privasi
+
+-- TemuJodoh Pro System Architecture --
+  
+  
 </html>
