@@ -3,236 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JodohKita – Platform Pencari Jodoh Serius</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>TemuJodoh Pro - Platform Pencari Jodoh</title>
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Poppins', sans-serif; background: #f4f6f8; color: #333; }
-
-    header { background: linear-gradient(135deg, #ff5a7a, #ff8fa3); color: #fff; padding: 70px 20px; text-align: center; }
-    header h1 { font-size: 42px; margin-bottom: 10px; }
-    header p { font-size: 18px; opacity: 0.95; }
-    header button { margin-top: 25px; padding: 14px 30px; font-size: 16px; border-radius: 30px; border: none; background: #fff; color: #ff5a7a; cursor: pointer; font-weight: 600; }
-
-    nav { background: #fff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 10; }
-    nav .logo { font-weight: 600; color: #ff5a7a; font-size: 20px; }
-    nav a { margin-left: 25px; text-decoration: none; color: #333; font-weight: 500; }
-
-    section { padding: 70px 20px; max-width: 1200px; margin: auto; }
-    section h2 { text-align: center; margin-bottom: 50px; font-size: 32px; }
-
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-    .feature { background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; }
-    .feature h3 { margin-bottom: 10px; color: #ff5a7a; }
-
-    .profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
-    .profile { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-    .profile img { width: 100%; height: 220px; object-fit: cover; }
-    .profile .info { padding: 20px; }
-    .profile button { width: 100%; margin-top: 15px; padding: 12px; border-radius: 25px; border: none; background: #ff5a7a; color: #fff; font-weight: 600; cursor: pointer; }
-
-    .cta { background: linear-gradient(135deg, #ff5a7a, #ff8fa3); color: #fff; text-align: center; padding: 70px 20px; border-radius: 20px; }
-    .cta h2 { margin-bottom: 15px; }
-    .cta button { margin-top: 20px; padding: 14px 35px; font-size: 16px; border-radius: 30px; border: none; background: #fff; color: #ff5a7a; font-weight: 600; cursor: pointer; }
-
-    footer { background: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 80px; }
+    body { font-family: Arial, sans-serif; margin:0; background:#f4f4f4; }
+    header { background:#2e7d32; color:white; padding:20px; text-align:center; }
+    nav { background:#fff; padding:10px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,.1); }
+    nav a { margin:0 10px; text-decoration:none; color:#2e7d32; font-weight:bold; }
+    section { padding:30px; max-width:1100px; margin:auto; }
+    .card { background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.1); margin-bottom:20px; }
+    .profiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+    button { background:#2e7d32; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; }
+    input, select, textarea { width:100%; padding:8px; margin:8px 0; }
+    footer { background:#222; color:white; text-align:center; padding:20px; }
+    .badge { font-size:12px; background:#2e7d32; color:white; padding:3px 6px; border-radius:4px; }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="logo">JodohKita</div>
-  <div>
-    <a href="#fitur">Fitur</a>
-    <a href="#anggota">Anggota</a>
-    <a href="#daftar">Daftar</a>
-    <a href="#kontak">Kontak</a>
-  </div>
-</nav>
-
 <header>
-  <h1>Temukan Pasangan Hidup yang Tepat</h1>
-  <p>Platform pencari jodoh online yang aman, profesional, dan berorientasi pada hubungan serius.</p>
-  <button>Mulai Sekarang</button>
+  <h1>TemuJodoh Pro</h1>
+  <p>Platform Pencari Jodoh Islami, Umum & Premium</p>
 </header>
 
-<section id="fitur">
-  <h2>Kenapa Memilih JodohKita?</h2>
-  <div class="features">
-    <div class="feature">
-      <h3>Verifikasi Profil</h3>
-      <p>Setiap anggota diverifikasi untuk menjaga keamanan dan keaslian data.</p>
-    </div>
-    <div class="feature">
-      <h3>Privasi Terjaga</h3>
-      <p>Data pribadi Anda dilindungi dengan sistem keamanan berlapis.</p>
-    </div>
-    <div class="feature">
-      <h3>Fokus Serius</h3>
-      <p>Bukan sekadar dating, tapi membangun hubungan menuju pernikahan.</p>
-    </div>
+<nav>
+  <a href="#login">Login</a>
+  <a href="#filter">Cari Jodoh</a>
+  <a href="#chat">Chat</a>
+  <a href="#admin">Admin</a>
+</nav>
+
+<section id="login">
+  <div class="card">
+    <h2>Login / Daftar Akun</h2>
+    <input type="text" placeholder="Username" />
+    <input type="password" placeholder="Password" />
+    <select>
+      <option>Akun Umum</option>
+      <option>Akun Islami</option>
+      <option>Akun Premium</option>
+    </select>
+    <button onclick="alert('Login berhasil (demo)')">Masuk</button>
   </div>
 </section>
 
-<section id="anggota">
-  <h2>Anggota Pilihan</h2>
+<section id="filter">
+  <div class="card">
+    <h2>Filter Pencarian</h2>
+    <select><option>Usia</option><option>20 - 25</option><option>26 - 30</option><option>31 - 40</option></select>
+    <select><option>Domisili</option><option>Jakarta</option><option>Bandung</option><option>Surabaya</option></select>
+    <select><option>Tujuan</option><option>Serius</option><option>Taaruf</option></select>
+    <button>Filter</button>
+  </div>
+
   <div class="profiles">
-    <div class="profile">
-      <img src="https://via.placeholder.com/400x300" alt="Profil">
-      <div class="info">
-        <h3>Aisyah, 25</h3>
-        <p>Guru • Jakarta</p>
-        <button>Hubungi</button>
-      </div>
+    <div class="card">
+      <h3>Ahmad, 29 <span class="badge">Islami</span></h3>
+      <p>Domisili: Bogor</p>
+      <p>Tujuan: Taaruf</p>
+      <button>Chat</button>
     </div>
-    <div class="profile">
-      <img src="https://via.placeholder.com/400x300" alt="Profil">
-      <div class="info">
-        <h3>Ahmad, 28</h3>
-        <p>Software Engineer • Bandung</p>
-        <button>Hubungi</button>
-      </div>
+    <div class="card">
+      <h3>Siti, 27 <span class="badge">Premium</span></h3>
+      <p>Domisili: Bandung</p>
+      <p>Tujuan: Serius</p>
+      <button>Chat</button>
     </div>
   </div>
 </section>
 
-<section id="daftar">
-  <div class="cta">
-    <h2>Siap Menemukan Jodoh?</h2>
-    <p>Daftarkan diri Anda sekarang dan mulai perjalanan menuju hubungan yang lebih serius.</p>
-    <button>Daftar Gratis</button>
+<section id="chat">
+  <div class="card">
+    <h2>Chat Antar Anggota (Demo)</h2>
+    <textarea rows="4" placeholder="Tulis pesan..."></textarea>
+    <button>Kirim</button>
+    <p><em>Catatan: Chat real-time membutuhkan backend (Firebase / Socket.io)</em></p>
   </div>
 </section>
 
-<footer id="kontak">
-  <p>© 2026 JodohKita. All Rights Reserved.</p>
-  <p>Email: admin@jodohkita.com</p>
+<section id="admin">
+  <div class="card">
+    <h2>Admin Panel</h2>
+    <p>Approve / Tolak Profil Anggota</p>
+    <ul>
+      <li>Andi, 30 <button>Approve</button> <button>Tolak</button></li>
+      <li>Siti, 27 <button>Approve</button> <button>Tolak</button></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 TemuJodoh Pro | Jodoh dengan Niat Baik</p>
 </footer>
 
-<!-- ================= LOGIN & REGISTER (FRONTEND) ================= -->
-<section id="auth">
-  <h2 style="text-align:center">Login & Register</h2>
-  <div class="features">
-    <div class="feature">
-      <h3>Login</h3>
-      <input placeholder="Email" /><br><br>
-      <input placeholder="Password" type="password" /><br><br>
-      <button>Login</button>
-    </div>
-    <div class="feature">
-      <h3>Register</h3>
-      <input placeholder="Nama Lengkap" /><br><br>
-      <input placeholder="Usia" /><br><br>
-      <input placeholder="Kota" /><br><br>
-      <input placeholder="Visi Pernikahan" /><br><br>
-      <button>Daftar</button>
-    </div>
-  </div>
-</section>
-
-<!-- ================= CHAT ANTAR ANGGOTA ================= -->
-<section>
-  <h2 style="text-align:center">Chat Anggota</h2>
-  <div class="feature">
-    <div style="height:150px; border:1px solid #ddd; padding:10px; overflow:auto">[Chat akan muncul di sini]</div><br>
-    <input placeholder="Tulis pesan..." style="width:100%; padding:10px" />
-  </div>
-</section>
-
-<!-- ================= MATCHING OTOMATIS ================= -->
-<section>
-  <h2 style="text-align:center">Matching Otomatis</h2>
-  <p style="text-align:center">Sistem mencocokkan berdasarkan usia, kota, dan visi pernikahan.</p>
-  <div class="features">
-    <div class="feature">
-      <h3>Hasil Cocok 92%</h3>
-      <p>Usia sesuai • Kota sama • Visi sejalan</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= VERSI ISLAMI ================= -->
-<section>
-  <h2 style="text-align:center">Fitur Islami (Ta'aruf)</h2>
-  <div class="features">
-    <div class="feature">
-      <h3>Wali</h3>
-      <p>Setiap akun wanita dapat didampingi wali.</p>
-    </div>
-    <div class="feature">
-      <h3>Admin Mediator</h3>
-      <p>Chat diawasi & difasilitasi admin.</p>
-    </div>
-    <div class="feature">
-      <h3>Ta'aruf Bertahap</h3>
-      <p>Profil → Visi → Chat → Nadzhom → Khitbah</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BACKEND REAL (LARAVEL + MYSQL) =================
-
-1. AUTH & SECURITY
-- Password hashing: bcrypt
-- Role access: user | wali | admin
-
-Laravel Auth (User Model):
-use Illuminate\Support\Facades\Hash;
-
-User::create([
- 'nama' => request('nama'),
- 'email' => request('email'),
- 'password' => Hash::make(request('password')),
- 'role' => 'user'
-]);
-
-Middleware Role:
-if(auth()->user()->role !== 'admin'){ abort(403); }
-
---------------------------------------------------
-2. DATABASE STRUCTURE
-users(id, nama, email, password, usia, kota, visi, role)
-chats(id, from_id, to_id, message, created_at)
-wali_relations(id, user_id, wali_id)
-matching_scores(user_id, target_id, score)
-
---------------------------------------------------
-3. MATCHING ALGORITHM (REAL SCORING)
-
-score = 0
-if(abs(usia1 - usia2) <= 3) score += 40
-if(kota1 == kota2) score += 30
-if(similar_text(visi1, visi2) > 60%) score += 30
-
-ORDER BY score DESC
-
---------------------------------------------------
-4. DASHBOARD ADMIN & WALI
-
-Admin:
-- Verifikasi akun
-- Monitor chat
-- Blokir pelanggaran
-
-Wali:
-- Akses chat dampingan
-- Setujui lanjut ta'aruf
-
---------------------------------------------------
-5. DEPLOYMENT
-
-Hosting:
-- VPS (Niagahoster / DigitalOcean)
-- PHP 8.2 + MySQL
-
-Steps:
-- Upload project
-- php artisan migrate
-- Set .env (DB & APP_KEY)
-- Point domain ke server
-
-======================================================== -->
-
 </body>
-      </html>
-        
+</html>
