@@ -170,12 +170,69 @@
   </div>
 </section>
 
-<!-- ================= BACKEND CONCEPT (PHP & MYSQL) =================
-TABLE users(id, nama, email, password, usia, kota, visi, role)
-TABLE chat(id, from_id, to_id, message, created_at)
-MATCHING = SELECT * FROM users ORDER BY skor_kecocokan DESC
+<!-- ================= BACKEND REAL (LARAVEL + MYSQL) =================
+
+1. AUTH & SECURITY
+- Password hashing: bcrypt
+- Role access: user | wali | admin
+
+Laravel Auth (User Model):
+use Illuminate\Support\Facades\Hash;
+
+User::create([
+ 'nama' => request('nama'),
+ 'email' => request('email'),
+ 'password' => Hash::make(request('password')),
+ 'role' => 'user'
+]);
+
+Middleware Role:
+if(auth()->user()->role !== 'admin'){ abort(403); }
+
+--------------------------------------------------
+2. DATABASE STRUCTURE
+users(id, nama, email, password, usia, kota, visi, role)
+chats(id, from_id, to_id, message, created_at)
+wali_relations(id, user_id, wali_id)
+matching_scores(user_id, target_id, score)
+
+--------------------------------------------------
+3. MATCHING ALGORITHM (REAL SCORING)
+
+score = 0
+if(abs(usia1 - usia2) <= 3) score += 40
+if(kota1 == kota2) score += 30
+if(similar_text(visi1, visi2) > 60%) score += 30
+
+ORDER BY score DESC
+
+--------------------------------------------------
+4. DASHBOARD ADMIN & WALI
+
+Admin:
+- Verifikasi akun
+- Monitor chat
+- Blokir pelanggaran
+
+Wali:
+- Akses chat dampingan
+- Setujui lanjut ta'aruf
+
+--------------------------------------------------
+5. DEPLOYMENT
+
+Hosting:
+- VPS (Niagahoster / DigitalOcean)
+- PHP 8.2 + MySQL
+
+Steps:
+- Upload project
+- php artisan migrate
+- Set .env (DB & APP_KEY)
+- Point domain ke server
+
 ======================================================== -->
 
 </body>
-                          </html>
-                            
+      </html>
+        
