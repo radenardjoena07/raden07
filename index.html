@@ -1,233 +1,85 @@
-// FULLSTACK DATING APP (React + Firebase)
-// ==================================
-// FIXED VERSION – Firebase initialized safely
-// Fitur:
-// - Login & Register (Firebase Auth)
-// - Like & Match
-// - Chat realtime (UI WhatsApp-style)
-// - Algoritma kecocokan & AI scoring
-// - Mobile-ready architecture
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-import { useEffect, useState } from "react";
-import { initializeApp, getApps } from "firebase/app";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
-import {
-  getFirestore,
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  addDoc,
-  query,
-  where,
-  onSnapshot,
-  serverTimestamp,
-} from "firebase/firestore";
-
-// 🔥 Firebase Config
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-};
-
-// ✅ SAFE INITIALIZATION (prevents auth not registered error)
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-export default function DatingApp() {
+export default function SahabatJodohApp() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [profiles, setProfiles] = useState([]);
-  const [current, setCurrent] = useState(0);
+  const [filter, setFilter] = useState({ usia: "", domisili: "", tujuan: "" });
 
-  // 🔐 Auth state listener (SAFE)
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      setLoading(false);
-    });
-    return () => unsub();
-  }, []);
-
-  // 🔐 Auth actions
-  const login = async () => {
-    await signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const register = async () => {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    await setDoc(doc(db, "users", res.user.uid), {
-      email,
-      age: 25,
-      city: "Jakarta",
-      interests: ["travel", "music"],
-      createdAt: serverTimestamp(),
-    });
-  };
-
-  // 🔍 Load profiles
-  useEffect(() => {
-    if (!user) return;
-    const q = query(collection(db, "users"), where("email", "!=", user.email));
-    const unsub = onSnapshot(q, (snap) => {
-      setProfiles(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    });
-    return () => unsub();
-  }, [user]);
-
-  // ❤️ Like & Match
-  const likeUser = async (targetId) => {
-    if (!user) return;
-
-    await setDoc(doc(db, "likes", `${user.uid}_${targetId}`), {
-      from: user.uid,
-      to: targetId,
-      createdAt: serverTimestamp(),
-    });
-
-    const matchCheck = await getDoc(doc(db, "likes", `${targetId}_${user.uid}`));
-    if (matchCheck.exists()) {
-      await setDoc(doc(db, "matches", `${user.uid}_${targetId}`), {
-        users: [user.uid, targetId],
-        createdAt: serverTimestamp(),
-      });
-    }
-
-    setCurrent((c) => c + 1);
-  };
-
-  // 🧠 Algoritma kecocokan
-  const compatibilityScore = (candidate) => {
-    if (!candidate) return 0;
-    let score = 0;
-    if (candidate.city === "Jakarta") score += 30;
-    if (candidate.interests?.includes("music")) score += 40;
-    if (Math.abs(candidate.age - 25) <= 3) score += 30;
-    return Math.min(score, 100);
-  };
-
-  // ⏳ Loading guard (IMPORTANT FIX)
-  if (loading) return <div className="p-4">Loading...</div>;
-
-  // 🔐 Login UI
-  if (!user)
+  if (!user) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center gap-2">
-        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input
-          placeholder="Password"
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={login}>Login</button>
-        <button onClick={register}>Register</button>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+        <Card className="w-full max-w-md rounded-2xl">
+          <CardContent className="p-6 space-y-4">
+            <h1 className="text-2xl font-bold text-center">🔐 Login Anggota</h1>
+            <Input placeholder="Email / Username" />
+            <Input type="password" placeholder="Password" />
+            <Button className="w-full" onClick={() => setUser({ name: "Anggota" })}>Login</Button>
+            <p className="text-sm text-center text-gray-500">Belum punya akun? Daftar melalui admin.</p>
+          </CardContent>
+        </Card>
       </div>
     );
-
-  const profile = profiles[current];
+  }
 
   return (
-    <div className="min-h-screen p-4">
-      <button onClick={() => signOut(auth)}>Logout</button>
+    <div className="min-h-screen bg-gray-50 p-6 space-y-6">
+      <h1 className="text-3xl font-bold">💖 Sahabat Jodoh</h1>
 
-      {profile ? (
-        <div className="border rounded-xl p-4 mt-4">
-          <h2>{profile.email}</h2>
-          <p>Usia: {profile.age}</p>
-          <p>Kota: {profile.city}</p>
-          <p>Skor cocok: {compatibilityScore(profile)}%</p>
-          <button onClick={() => likeUser(profile.id)}>❤️ Suka</button>
-          <button onClick={() => setCurrent((c) => c + 1)}>Skip</button>
-        </div>
-      ) : (
-        <h1>Tidak ada profil lagi</h1>
-      )}
+      {/* Profil Anggota */}
+      <Card className="rounded-2xl">
+        <CardContent className="p-4 space-y-2">
+          <h2 className="text-xl font-semibold">👤 Profil Saya</h2>
+          <Input placeholder="Nama Lengkap" />
+          <Input placeholder="Usia" type="number" />
+          <Input placeholder="Domisili" />
+          <Input placeholder="Tujuan (Ta'aruf / Nikah)" />
+          <Textarea placeholder="Deskripsi Singkat" />
+          <Button>Simpan Profil</Button>
+        </CardContent>
+      </Card>
+
+      {/* Filter & Matching */}
+      <Card className="rounded-2xl">
+        <CardContent className="p-4 space-y-3">
+          <h2 className="text-xl font-semibold">❤️ Cari & Cocokkan Jodoh</h2>
+          <div className="grid md:grid-cols-3 gap-2">
+            <Input placeholder="Usia" onChange={(e) => setFilter({ ...filter, usia: e.target.value })} />
+            <Input placeholder="Domisili" onChange={(e) => setFilter({ ...filter, domisili: e.target.value })} />
+            <Input placeholder="Tujuan Nikah" onChange={(e) => setFilter({ ...filter, tujuan: e.target.value })} />
+          </div>
+          <Button>Cari Kandidat</Button>
+          <p className="text-sm text-gray-500">Sistem akan menampilkan anggota dengan kriteria serupa.</p>
+        </CardContent>
+      </Card>
+
+      {/* Grup Chat / Forum */}
+      <Card className="rounded-2xl">
+        <CardContent className="p-4 space-y-2">
+          <h2 className="text-xl font-semibold">💬 Forum Diskusi</h2>
+          <Textarea placeholder="Tulis pesan atau diskusi sopan di sini..." />
+          <Button>Kirim</Button>
+          <p className="text-sm text-gray-500">Forum diawasi admin, jaga adab & etika.</p>
+        </CardContent>
+      </Card>
+
+      {/* Keamanan */}
+      <Card className="rounded-2xl border border-red-200">
+        <CardContent className="p-4 space-y-2">
+          <h2 className="text-xl font-semibold">🛡️ Keamanan & Laporan</h2>
+          <p className="text-sm text-gray-600">Laporkan akun yang tidak sopan atau mencurigakan.</p>
+          <Input placeholder="Nama / ID Akun" />
+          <Textarea placeholder="Alasan laporan" />
+          <Button variant="destructive">Laporkan ke Admin</Button>
+        </CardContent>
+      </Card>
+
+      <footer className="text-sm text-gray-500 text-center pt-6">
+        © 2026 Sahabat Jodoh · Sistem komunitas pencari jodoh terpercaya
+      </footer>
     </div>
   );
 }
-
-// =============================
-// 💬 WhatsApp-style Chat UI
-// =============================
-
-export function ChatUI({ messages = [], userId }) {
-  return (
-    <div className="flex flex-col gap-2 h-96 overflow-y-auto p-2 bg-gray-100 rounded-xl">
-      {messages.map((m) => (
-        <div
-          key={m.id}
-          className={`max-w-xs p-2 rounded-xl text-sm ${
-            m.from === userId
-              ? "self-end bg-green-500 text-white"
-              : "self-start bg-white"
-          }`}
-        >
-          {m.text}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// =============================
-// 🧬 AI Recommendation Engine
-// =============================
-
-export function aiRecommendation(user, candidate) {
-  if (!user || !candidate) return 0;
-  let score = 0;
-  score += 100 - Math.abs(user.age - candidate.age) * 5;
-  if (user.city === candidate.city) score += 40;
-  const sameInterests = user.interests?.filter((i) =>
-    candidate.interests?.includes(i)
-  ).length;
-  score += sameInterests * 20;
-  return Math.max(0, Math.min(score, 100));
-}
-
-// =============================
-// 🌍 Filters
-// =============================
-
-export function filterProfiles(profiles, filters) {
-  return profiles.filter((p) => {
-    if (filters.minAge && p.age < filters.minAge) return false;
-    if (filters.maxAge && p.age > filters.maxAge) return false;
-    if (filters.city && p.city !== filters.city) return false;
-    if (filters.interest && !p.interests?.includes(filters.interest)) return false;
-    return true;
-  });
-}
-
-// =============================
-// 🏪 Monetization
-// =============================
-
-export const plans = {
-  free: { likesPerDay: 10, boost: false },
-  premium: { likesPerDay: 100, boost: true },
-};
-
-export function applyBoost(profile) {
-  return {
-    ...profile,
-    boostedUntil: Date.now() + 30 * 60 * 1000,
-  };
-
-// =============================
-// ✅ BASIC RUNTIME TESTS
-// =============================
-
-console.assert(typeof aiRecommendation === "function", "AI function missing");
-console.assert(plans.premium.boost === true, "Premium plan broken");
-      
+            
