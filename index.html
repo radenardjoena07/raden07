@@ -1,116 +1,110 @@
-<?php
-// =========================
-// CONFIG DATABASE
-// =========================
-$host = "localhost";
-$db   = "netflix_clone";
-$user = "root";
-$pass = "";
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) die("DB Error");
-
-$page = $_GET['page'] ?? 'home';
-$id   = $_GET['id'] ?? null;
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>NETMOV – Nonton Film Gratis & Legal</title>
-  <meta name="description" content="Streaming film gratis & legal dengan tampilan sekelas Netflix" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pembuat Kartu Ucapan Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; margin:0; background:#f8fafc; }
+    nav { background:#4f46e5; padding:15px; display:flex; justify-content:center; gap:20px; }
+    nav a { color:white; text-decoration:none; font-weight:600; }
+    section { display:none; padding:30px; }
+    section.active { display:block; }
+    h1,h2 { text-align:center; }
+    .container { max-width:1000px; margin:auto; background:white; padding:25px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.1); }
+    label { font-weight:600; }
+    select,input,textarea,button { width:100%; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ccc; }
+    button { background:#4f46e5; color:white; border:none; cursor:pointer; font-size:16px; }
+    .actions { display:flex; gap:10px; margin-top:15px; flex-wrap:wrap; }
+    .card-preview { margin-top:30px; padding:40px; border-radius:20px; text-align:center; min-height:280px; position:relative; }
 
-  <!-- SEO -->
-  <meta property="og:title" content="NETMOV – Streaming Film" />
-  <meta property="og:description" content="Nonton film gratis & legal" />
+    .lebaran{background:linear-gradient(135deg,#064e3b,#10b981);color:#ecfdf5;font-family:'Amiri',serif;}
+    .natal{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:white;}
+    .ulangtahun{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:white;}
+    .idadha{background:linear-gradient(135deg,#78350f,#f59e0b);color:white;}
+    .tahunbaru{background:linear-gradient(135deg,#020617,#334155);color:white;}
+    .valentine{background:linear-gradient(135deg,#be123c,#fb7185);color:white;}
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    footer{text-align:center;margin:30px;color:#555;}
+    @media(max-width:768px){.actions{flex-direction:column;}}
+  </style>
 </head>
-<body class="bg-black text-white">
+<body>
 
-<!-- NAVBAR -->
-<nav class="fixed w-full z-50 bg-black/80 backdrop-blur flex justify-between px-8 py-4">
-  <a href="?page=home" class="text-red-600 text-2xl font-extrabold">NETMOV</a>
-  <form method="get">
-    <input type="hidden" name="page" value="home" />
-    <input name="q" placeholder="Cari film..." class="bg-zinc-900 px-3 py-1 rounded" />
-  </form>
+<nav>
+  <a href="#" onclick="showPage('home')">Home</a>
+  <a href="#" onclick="showPage('gallery')">Gallery</a>
+  <a href="#" onclick="showPage('about')">About</a>
 </nav>
 
-<div class="pt-24 px-8">
+<section id="home" class="active">
+  <h1>🎉 Pembuat Kartu Ucapan</h1>
+  <div class="container">
+    <label>Jenis Kartu</label>
+    <select id="jenis">
+      <option value="lebaran">Lebaran</option>
+      <option value="idadha">Idul Adha</option>
+      <option value="natal">Natal</option>
+      <option value="ulangtahun">Ulang Tahun</option>
+      <option value="tahunbaru">Tahun Baru</option>
+      <option value="valentine">Valentine</option>
+    </select>
 
-<?php if ($page == 'home'): ?>
-<!-- HOME -->
-<section class="mb-12">
-  <h2 class="text-3xl font-bold mb-4">Trending Now</h2>
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-    <?php
-    $q = $_GET['q'] ?? '';
-    $sql = "SELECT * FROM movies WHERE title LIKE '%$q%'";
-    $res = $conn->query($sql);
-    while($m = $res->fetch_assoc()): ?>
-      <a href="?page=detail&id=<?= $m['id'] ?>" class="hover:scale-110 transition">
-        <img src="<?= $m['thumbnail'] ?>" class="rounded-xl h-64 w-full object-cover" />
-        <h3 class="mt-2 font-semibold text-sm"><?= $m['title'] ?></h3>
-      </a>
-    <?php endwhile; ?>
+    <label>Nama Penerima</label>
+    <input id="nama" placeholder="Nama penerima" />
+
+    <label>Pesan</label>
+    <textarea id="pesan" rows="4"></textarea>
+
+    <div class="actions">
+      <button onclick="buatKartu()">Buat Kartu</button>
+      <button onclick="downloadPNG()">Download PNG</button>
+      <button onclick="shareWA()">Share WhatsApp</button>
+    </div>
+
+    <div id="preview" class="card-preview"></div>
   </div>
 </section>
-<?php endif; ?>
 
-<?php if ($page == 'detail' && $id): ?>
-<!-- DETAIL -->
-<?php $m = $conn->query("SELECT * FROM movies WHERE id=$id")->fetch_assoc(); ?>
-<section class="grid md:grid-cols-2 gap-10">
-  <img src="<?= $m['thumbnail'] ?>" class="rounded-xl" />
-  <div>
-    <h1 class="text-4xl font-bold mb-3"><?= $m['title'] ?></h1>
-    <p class="text-gray-400 mb-4"><?= $m['genre'] ?> • ⭐ <?= $m['rating'] ?></p>
-    <p class="mb-6"><?= $m['description'] ?></p>
-    <a href="?page=play&id=<?= $m['id'] ?>" class="bg-red-600 px-6 py-3 rounded font-bold">▶ Play</a>
+<section id="gallery">
+  <h2>🖼️ Gallery Template</h2>
+  <div class="container">
+    <p>Kumpulan tema kartu: Lebaran Islami, Natal Klasik, Ulang Tahun Modern, Idul Adha, Tahun Baru, Valentine.</p>
+    <p>(Bisa dikembangkan jadi grid gambar template)</p>
   </div>
 </section>
-<?php endif; ?>
 
-<?php if ($page == 'play' && $id): ?>
-<!-- PLAYER -->
-<?php $m = $conn->query("SELECT * FROM movies WHERE id=$id")->fetch_assoc(); ?>
-<section class="max-w-5xl mx-auto">
-  <h1 class="text-2xl font-bold mb-4"><?= $m['title'] ?></h1>
-  <video controls autoplay class="w-full rounded-xl">
-    <source src="<?= $m['video'] ?>" type="video/mp4" />
-  </video>
+<section id="about">
+  <h2>ℹ️ Tentang Website</h2>
+  <div class="container">
+    <p>Website ini digunakan untuk membuat kartu ucapan digital yang bisa diunduh dan dibagikan langsung ke WhatsApp.</p>
+    <p>Dibangun dengan HTML, CSS, dan JavaScript — ringan dan gratis di-hosting.</p>
+  </div>
 </section>
-<?php endif; ?>
 
-</div>
+<footer>© 2026 Pembuat Kartu Ucapan Online</footer>
 
-<!-- FOOTER -->
-<footer class="text-center text-gray-500 text-sm py-6 mt-20">
-  © 2026 NETMOV – Free & Legal Streaming
-</footer>
+<script>
+function showPage(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
+function buatKartu(){
+  const jenis=document.getElementById('jenis').value;
+  const nama=document.getElementById('nama').value||'Sahabat';
+  const pesan=document.getElementById('pesan').value||'Semoga harimu penuh kebahagiaan';
+  let judul={lebaran:'Selamat Idul Fitri',idadha:'Selamat Idul Adha',natal:'Selamat Natal',ulangtahun:'Selamat Ulang Tahun',tahunbaru:'Selamat Tahun Baru',valentine:'Happy Valentine'}[jenis];
+  const p=document.getElementById('preview');
+  p.className='card-preview '+jenis;
+  p.innerHTML=`<h2>${judul}</h2><h3>${nama}</h3><p>${pesan}</p>`;
+}
+
+function downloadPNG(){html2canvas(document.getElementById('preview')).then(c=>{let a=document.createElement('a');a.download='kartu.png';a.href=c.toDataURL();a.click();});}
+
+function shareWA(){
+  const text=encodeURIComponent(document.getElementById('preview').innerText);
+  window.open('https://wa.me/?text='+text,'_blank');
+}
+</script>
 </body>
 </html>
-
-<?php
-/* =========================
-DATABASE STRUCTURE (MySQL)
-=========================
-CREATE TABLE movies (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255),
-  genre VARCHAR(50),
-  rating FLOAT,
-  description TEXT,
-  thumbnail TEXT,
-  video TEXT
-);
-
-INSERT SAMPLE:
-INSERT INTO movies (title, genre, rating, description, thumbnail, video)
-VALUES ('Sintel','Fantasy',8.3,'Film open-source','POSTER_URL','VIDEO_URL');
-*/
-?>
