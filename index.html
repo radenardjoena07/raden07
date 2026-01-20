@@ -1,147 +1,130 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pembuat Kartu Ucapan SaaS</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<style>
-body{font-family:Poppins,sans-serif;margin:0;background:#f1f5f9}
-nav{background:#4f46e5;padding:15px;display:flex;gap:20px;justify-content:center}
-nav a{color:#fff;text-decoration:none;font-weight:600}
-section{display:none;padding:30px}
-section.active{display:block}
-.container{max-width:1100px;margin:auto;background:#fff;padding:25px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
-label{font-weight:600}
-select,input,textarea,button{width:100%;padding:12px;margin-top:8px;border-radius:10px;border:1px solid #ccc}
-button{background:#4f46e5;color:#fff;border:none;font-size:16px;cursor:pointer}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
-.card-preview{margin-top:30px;padding:40px;border-radius:20px;text-align:center;min-height:320px;position:relative;overflow:hidden}
-.card-preview img{max-width:120px;border-radius:50%;margin-bottom:10px}
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
-.gallery div{padding:40px;border-radius:16px;color:#fff;text-align:center;font-weight:600}
-.lebaran{background:linear-gradient(135deg,#064e3b,#10b981);color:#ecfdf5;font-family:Amiri,serif}
-.idadha{background:linear-gradient(135deg,#78350f,#f59e0b);color:#fff}
-.natal{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff}
-.ulangtahun{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff}
-.tahunbaru{background:linear-gradient(135deg,#020617,#334155);color:#fff}
-.valentine{background:linear-gradient(135deg,#be123c,#fb7185);color:#fff}
-footer{text-align:center;margin:30px;color:#555}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cari Jodoh Pro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
-<body>
+<body class="bg-pink-50 min-h-screen">
 
-<audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c77c6fef6.mp3" type="audio/mpeg">
-</audio>
+<header class="bg-pink-600 text-white p-4 text-center text-2xl font-bold">❤️ Cari Jodoh Pro</header>
 
-<nav>
-<a href="#" onclick="showPage('home')">Home</a>
-<a href="#" onclick="showPage('gallery')">Gallery</a>
-<a href="#" onclick="showPage('about')">About</a>
-</nav>
+<main class="p-6 max-w-4xl mx-auto space-y-6">
 
-<section id="home" class="active">
-<h1 style="text-align:center">🎉 Pembuat Kartu Ucapan</h1>
-<div class="container">
-<label>Template</label>
-<select id="jenis">
-<option value="lebaran">Lebaran</option>
-<option value="idadha">Idul Adha</option>
-<option value="natal">Natal</option>
-<option value="ulangtahun">Ulang Tahun</option>
-<option value="tahunbaru">Tahun Baru</option>
-<option value="valentine">Valentine</option>
-</select>
+  <!-- AUTH -->
+  <div id="auth" class="bg-white p-6 rounded-2xl shadow">
+    <h2 class="text-xl font-semibold mb-4">Login / Register</h2>
+    <input id="email" type="email" placeholder="Email" class="w-full p-2 border rounded mb-2" />
+    <input id="password" type="password" placeholder="Password" class="w-full p-2 border rounded mb-2" />
+    <button onclick="register()" class="bg-pink-600 text-white px-4 py-2 rounded w-full mb-2">Register</button>
+    <button onclick="login()" class="border px-4 py-2 rounded w-full">Login</button>
+  </div>
 
-<label>Nama Penerima</label>
-<input id="nama" />
+  <!-- PROFILE -->
+  <div id="profile" class="hidden bg-white p-6 rounded-2xl shadow">
+    <h2 class="text-xl font-semibold mb-4">Profil Saya</h2>
+    <input id="name" placeholder="Nama" class="w-full p-2 border rounded mb-2" />
+    <input id="age" type="number" placeholder="Usia" class="w-full p-2 border rounded mb-2" />
+    <select id="gender" class="w-full p-2 border rounded mb-2">
+      <option>Pria</option>
+      <option>Wanita</option>
+    </select>
+    <input id="interest" placeholder="Minat (musik, traveling, dll)" class="w-full p-2 border rounded mb-2" />
+    <input id="photo" type="file" class="w-full mb-2" />
+    <button onclick="saveProfile()" class="bg-pink-600 text-white px-4 py-2 rounded w-full">Simpan Profil</button>
+  </div>
 
-<label>Pesan</label>
-<textarea id="pesan" rows="4"></textarea>
+  <!-- MATCHING -->
+  <div id="matches" class="hidden bg-white p-6 rounded-2xl shadow">
+    <h2 class="text-xl font-semibold mb-4">💖 Hasil Matching</h2>
+    <div id="matchList" class="space-y-3"></div>
+  </div>
 
-<label>Upload Foto (opsional)</label>
-<input type="file" id="foto" accept="image/*" />
-
-<div class="actions">
-<button onclick="buatKartu()">Buat Kartu</button>
-<button onclick="downloadPNG()">Download PNG</button>
-<button onclick="shareLink()">Share Link</button>
-<button onclick="toggleMusic()">🎶 Musik</button>
-</div>
-
-<div id="preview" class="card-preview"></div>
-</div>
-</section>
-
-<section id="gallery">
-<h2>🖼️ Gallery Template</h2>
-<div class="container gallery">
-<div class="lebaran">Lebaran</div>
-<div class="idadha">Idul Adha</div>
-<div class="natal">Natal</div>
-<div class="ulangtahun">Ulang Tahun</div>
-<div class="tahunbaru">Tahun Baru</div>
-<div class="valentine">Valentine</div>
-</div>
-</section>
-
-<section id="about">
-<h2>🚀 Versi SaaS & Monetisasi</h2>
-<div class="container">
-<ul>
-<li>🧾 Penyimpanan kartu: LocalStorage (bisa upgrade Firebase)</li>
-<li>💰 Monetisasi: Premium template, watermark removal</li>
-<li>📦 Source code dijual (HTML version)</li>
-<li>🌐 Bisa dikembangkan React + Backend</li>
-</ul>
-</div>
-</section>
-
-<footer>© 2026 Greeting Card SaaS</footer>
+</main>
 
 <script>
-function showPage(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+  // FIREBASE CONFIG (GANTI DENGAN PUNYAMU)
+  const firebaseConfig = {
+    apiKey: "API_KEY",
+    authDomain: "PROJECT.firebaseapp.com",
+    projectId: "PROJECT",
+    storageBucket: "PROJECT.appspot.com",
+    messagingSenderId: "ID",
+    appId: "APP_ID"
+  };
 
-function buatKartu(){
-const jenis=jenisEl.value
-const nama=namaEl.value||'Sahabat'
-const pesan=pesanEl.value||'Semoga harimu bahagia'
-let judul={lebaran:'Selamat Idul Fitri',idadha:'Selamat Idul Adha',natal:'Selamat Natal',ulangtahun:'Selamat Ulang Tahun',tahunbaru:'Selamat Tahun Baru',valentine:'Happy Valentine'}[jenis]
-preview.className='card-preview '+jenis
-preview.innerHTML=`<h2>${judul}</h2>`
-if(foto.files[0]){
- const r=new FileReader()
- r.onload=e=>preview.innerHTML+=`<img src='${e.target.result}'>`
- r.readAsDataURL(foto.files[0])
-}
-preview.innerHTML+=`<h3>${nama}</h3><p>${pesan}</p>`
-localStorage.setItem('lastCard',JSON.stringify({jenis,nama,pesan}))
-}
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
 
-function downloadPNG(){html2canvas(preview).then(c=>{let a=document.createElement('a');a.download='kartu.png';a.href=c.toDataURL();a.click()})}
+  function register() {
+    auth.createUserWithEmailAndPassword(email.value, password.value)
+      .then(() => alert('Register berhasil'))
+      .catch(err => alert(err.message));
+  }
 
-function shareLink(){
-const data=btoa(JSON.stringify({jenis:jenisEl.value,nama:namaEl.value,pesan:pesanEl.value}))
-const url=location.origin+location.pathname+'?card='+data
-navigator.clipboard.writeText(url)
-alert('Link kartu disalin!')
-}
+  function login() {
+    auth.signInWithEmailAndPassword(email.value, password.value)
+      .catch(err => alert(err.message));
+  }
 
-function toggleMusic(){const m=document.getElementById('bgMusic');m.paused?m.play():m.pause()}
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      authDiv.style.display = 'none';
+      profile.style.display = 'block';
+      matches.style.display = 'block';
+      loadMatches();
+    }
+  });
 
-const jenisEl=document.getElementById('jenis')
-const namaEl=document.getElementById('nama')
-const pesanEl=document.getElementById('pesan')
-const foto=document.getElementById('foto')
-const preview=document.getElementById('preview')
+  async function saveProfile() {
+    const file = photo.files[0];
+    const ref = storage.ref('photos/' + auth.currentUser.uid);
+    await ref.put(file);
+    const photoURL = await ref.getDownloadURL();
 
-const params=new URLSearchParams(location.search)
-if(params.get('card')){
-const d=JSON.parse(atob(params.get('card')))
-jenisEl.value=d.jenis;namaEl.value=d.nama;pesanEl.value=d.pesan;buatKartu()
-}
+    await db.collection('users').doc(auth.currentUser.uid).set({
+      name: name.value,
+      age: Number(age.value),
+      gender: gender.value,
+      interest: interest.value,
+      photoURL
+    });
+
+    alert('Profil disimpan');
+  }
+
+  async function loadMatches() {
+    const me = await db.collection('users').doc(auth.currentUser.uid).get();
+    const data = me.data();
+
+    const users = await db.collection('users').get();
+    matchList.innerHTML = '';
+
+    users.forEach(doc => {
+      if (doc.id !== auth.currentUser.uid) {
+        const u = doc.data();
+        if (u.gender !== data.gender && Math.abs(u.age - data.age) <= 5) {
+          matchList.innerHTML += `
+            <div class="border p-3 rounded">
+              <img src="${u.photoURL}" class="w-20 h-20 rounded-full mb-2" />
+              <strong>${u.name}</strong> (${u.age})<br>
+              <span class="text-sm">${u.interest}</span>
+              <button class="block mt-2 text-pink-600">💬 Chat</button>
+            </div>`;
+        }
+      }
+    });
+  }
 </script>
+
+<footer class="text-center p-4 text-sm text-gray-500">© 2026 Cari Jodoh Pro</footer>
 </body>
 </html>
